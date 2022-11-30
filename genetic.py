@@ -46,6 +46,16 @@ data10, dataz10, dataInBits10 = checkboard(8)
 # crossover function
 
 
+# def crossover(data, data2):
+#     leng = len(data)
+#     temp = data.copy()
+#     temp2 = data2.copy()
+#     for i in range(leng):
+#         for j in range(leng):
+#             if j >= 4:
+#                 data[i, j] = temp2[i, j]
+#                 data2[i, j] = temp[i, j]
+#     return data, data2
 def crossover(data, data2):
     leng = len(data)
     temp = data.copy()
@@ -110,19 +120,17 @@ def fitness(data):
                 fit += 1
             if i == leng-1:
                 fit += 1
-            if i == 0 and j == 0:
+            if j == 0:
                 fit += 1
-            if i == 0 and j == leng-1:
-                fit += 1
-            if i == leng-1 and j == 0:
-                fit += 1
-            if i == leng-1 and j == leng-1:
+            if j == leng-1:
                 fit += 1
 
     return fit
 
 
 fit = fitness(dataAfterCross)
+print(fit)
+print(dataAfterCross)
 fit2 = fitness(dataAfterCross2)
 fit3 = fitness(dataAfterCross3)
 fit4 = fitness(dataAfterCross4)
@@ -162,7 +170,7 @@ print("bestFit", bestFit)
 def checkAnswer(bestFit):
     # iterate through bestFit and check if close to answer %90 of 256
     for i in range(len(bestFit)):
-        if bestFit[i][1] >= 256*0.86:
+        if bestFit[i][1] >= 256*0.95:
             return bestFit[i][1]
     return False
 
@@ -173,6 +181,7 @@ loopthrough = False
 loopcount = 0
 bestofbest = 0
 bestofbestBoard = np.zeros((8, 8))
+bestInEachGen = []
 # if doesn't close to answer then generate new 5 generation and old 5 best generation
 if (checked == False):
     print("not close to answer")
@@ -245,6 +254,7 @@ if (checked == False):
         }
         if (bestFit[4][1] > bestofbest):
             bestofbest = bestFit[4][1]
+            bestInEachGen.append(bestofbest)
             bestofbestBoard = afterCross[5]
         print(bestFit)
         if (checked == False):
@@ -293,9 +303,10 @@ if (checked == False):
             }
             if (bestFit[4][1] > bestofbest):
                 bestofbest = bestFit[4][1]
+                bestInEachGen.append(bestofbest)
                 bestofbestBoard = afterCross[5]
             loopcount += 1
-            if (loopcount == 15):
+            if (loopcount == 10):
                 loopthrough = True
             if (bestFit[4][1] == 250):
                 print("found answer")
@@ -323,4 +334,7 @@ for i in range(8):
 col = colors.ListedColormap(colorz)
 fig, ax = plt.subplots()
 im = ax.imshow(showboard, cmap=col)
+print(bestInEachGen)
+# plt.hist(bestInEachGen)
+
 plt.show()
