@@ -182,7 +182,7 @@ loopcount = 0
 bestofbest = 0
 bestofbestBoard = np.zeros((8, 8))
 bestInEachGen = []
-
+lastBest = 0
 # get 5 old best generation
 while (loopthrough == False):
     # oldCross = {}
@@ -207,16 +207,6 @@ while (loopthrough == False):
     dataAfterCross9, dataAfterCross10 = crossover(
         dataInBits9, dataInBits10)
 
-    # dataAfterCross = mutation(dataAfterCross)
-    # dataAfterCross2 = mutation(dataAfterCross2)
-    # dataAfterCross3 = mutation(dataAfterCross3)
-    # dataAfterCross4 = mutation(dataAfterCross4)
-    # dataAfterCross5 = mutation(dataAfterCross5)
-    # dataAfterCross6 = mutation(dataAfterCross6)
-    # dataAfterCross7 = mutation(dataAfterCross7)
-    # dataAfterCross8 = mutation(dataAfterCross8)
-    # dataAfterCross9 = mutation(dataAfterCross9)
-    # dataAfterCross10 = mutation(dataAfterCross10)
     afterCross2 = {
         1: dataAfterCross,
         2: dataAfterCross2,
@@ -263,6 +253,19 @@ while (loopthrough == False):
             afterCross[4], afterCross2[4])
         dataAfterCross9, dataAfterCross10 = crossover(
             afterCross[5], afterCross2[5])
+
+        # if (loopcount-lastBest > 100):
+        #     lastBest = 0
+        #     dataAfterCross = mutation(dataAfterCross)
+        #     dataAfterCross2 = mutation(dataAfterCross2)
+        #     dataAfterCross3 = mutation(dataAfterCross3)
+        #     dataAfterCross4 = mutation(dataAfterCross4)
+        #     dataAfterCross5 = mutation(dataAfterCross5)
+        #     dataAfterCross6 = mutation(dataAfterCross6)
+        #     dataAfterCross7 = mutation(dataAfterCross7)
+        #     dataAfterCross8 = mutation(dataAfterCross8)
+        #     dataAfterCross9 = mutation(dataAfterCross9)
+        #     dataAfterCross10 = mutation(dataAfterCross10)
         afterCross = {
             1: dataAfterCross,
             2: dataAfterCross2,
@@ -299,10 +302,9 @@ while (loopthrough == False):
             bestofbest = bestFit[4][1]
             bestInEachGen.append(bestofbest)
             bestofbestBoard = afterCross[5].copy()
-            print("bestfit", bestFit)
-            print("bestFit[4][0]", bestFit[4][0])
-            print("bestofbest", bestofbest)
+            lastBest = loopcount
             print("bestofbestBoard", bestofbestBoard)
+            print("bestofbest", bestofbest)
             print("loop", loopcount)
         if (bestFit[4][1] == 256):
             print("found answer")
@@ -310,7 +312,7 @@ while (loopthrough == False):
             print(bestFit[4][1])
             break
         loopcount += 1
-        if (loopcount == 1000):
+        if (loopcount == 1000000):
             loopthrough = True
     else:
         loopthrough = True
@@ -334,6 +336,6 @@ col = colors.ListedColormap(colorz)
 fig, ax = plt.subplots()
 im = ax.imshow(showboard, cmap=col)
 # print(bestInEachGen)
-# # plt.hist(bestInEachGen)
+# plt.hist(bestInEachGen)
 
 plt.show()
