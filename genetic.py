@@ -129,8 +129,8 @@ def fitness(data):
 
 
 fit = fitness(dataAfterCross)
-print(fit)
-print(dataAfterCross)
+# print(fit)
+# print(dataAfterCross)
 fit2 = fitness(dataAfterCross2)
 fit3 = fitness(dataAfterCross3)
 fit4 = fitness(dataAfterCross4)
@@ -163,14 +163,14 @@ afterCross = {
     4: afterCross[bestFit[3][0]],
     5: afterCross[bestFit[4][0]]
 }
-print("bestFit", bestFit)
+# print("bestFit", bestFit)
 # check if close to answer 8*8 in max= 8*8*4= 256 fitness
 
 
 def checkAnswer(bestFit):
     # iterate through bestFit and check if close to answer %90 of 256
     for i in range(len(bestFit)):
-        if bestFit[i][1] >= 256*0.95:
+        if bestFit[i][1] >= 256*0.99:
             return bestFit[i][1]
     return False
 
@@ -182,44 +182,88 @@ loopcount = 0
 bestofbest = 0
 bestofbestBoard = np.zeros((8, 8))
 bestInEachGen = []
-# if doesn't close to answer then generate new 5 generation and old 5 best generation
-if (checked == False):
-    print("not close to answer")
-    # get 5 old best generation
-    while (loopthrough == False):
-        # oldCross = {}
-        # for i in range(len(bestFit)):
-        #     oldCross[i] = afterCross[bestFit[i][0]]
-        # generate 10 generations
-        data, dataz, dataInBits = checkboard(8)
-        data2, dataz2, dataInBits2 = checkboard(8)
-        data3, dataz3, dataInBits3 = checkboard(8)
-        data4, dataz4, dataInBits4 = checkboard(8)
-        data5, dataz5, dataInBits5 = checkboard(8)
-        data6, dataz6, dataInBits6 = checkboard(8)
-        data7, dataz7, dataInBits7 = checkboard(8)
-        data8, dataz8, dataInBits8 = checkboard(8)
-        data9, dataz9, dataInBits9 = checkboard(8)
-        data10, dataz10, dataInBits10 = checkboard(8)
-        # crossover function
-        dataAfterCross, dataAfterCross2 = crossover(dataInBits, dataInBits2)
-        dataAfterCross3, dataAfterCross4 = crossover(dataInBits3, dataInBits4)
-        dataAfterCross5, dataAfterCross6 = crossover(dataInBits5, dataInBits6)
-        dataAfterCross7, dataAfterCross8 = crossover(dataInBits7, dataInBits8)
-        dataAfterCross9, dataAfterCross10 = crossover(
-            dataInBits9, dataInBits10)
 
-        # dataAfterCross = mutation(dataAfterCross)
-        # dataAfterCross2 = mutation(dataAfterCross2)
-        # dataAfterCross3 = mutation(dataAfterCross3)
-        # dataAfterCross4 = mutation(dataAfterCross4)
-        # dataAfterCross5 = mutation(dataAfterCross5)
-        # dataAfterCross6 = mutation(dataAfterCross6)
-        # dataAfterCross7 = mutation(dataAfterCross7)
-        # dataAfterCross8 = mutation(dataAfterCross8)
-        # dataAfterCross9 = mutation(dataAfterCross9)
-        # dataAfterCross10 = mutation(dataAfterCross10)
-        afterCross2 = {
+# get 5 old best generation
+while (loopthrough == False):
+    # oldCross = {}
+    # for i in range(len(bestFit)):
+    #     oldCross[i] = afterCross[bestFit[i][0]]
+    # generate 10 generations
+    data, dataz, dataInBits = checkboard(8)
+    data2, dataz2, dataInBits2 = checkboard(8)
+    data3, dataz3, dataInBits3 = checkboard(8)
+    data4, dataz4, dataInBits4 = checkboard(8)
+    data5, dataz5, dataInBits5 = checkboard(8)
+    data6, dataz6, dataInBits6 = checkboard(8)
+    data7, dataz7, dataInBits7 = checkboard(8)
+    data8, dataz8, dataInBits8 = checkboard(8)
+    data9, dataz9, dataInBits9 = checkboard(8)
+    data10, dataz10, dataInBits10 = checkboard(8)
+    # crossover function
+    dataAfterCross, dataAfterCross2 = crossover(dataInBits, dataInBits2)
+    dataAfterCross3, dataAfterCross4 = crossover(dataInBits3, dataInBits4)
+    dataAfterCross5, dataAfterCross6 = crossover(dataInBits5, dataInBits6)
+    dataAfterCross7, dataAfterCross8 = crossover(dataInBits7, dataInBits8)
+    dataAfterCross9, dataAfterCross10 = crossover(
+        dataInBits9, dataInBits10)
+
+    # dataAfterCross = mutation(dataAfterCross)
+    # dataAfterCross2 = mutation(dataAfterCross2)
+    # dataAfterCross3 = mutation(dataAfterCross3)
+    # dataAfterCross4 = mutation(dataAfterCross4)
+    # dataAfterCross5 = mutation(dataAfterCross5)
+    # dataAfterCross6 = mutation(dataAfterCross6)
+    # dataAfterCross7 = mutation(dataAfterCross7)
+    # dataAfterCross8 = mutation(dataAfterCross8)
+    # dataAfterCross9 = mutation(dataAfterCross9)
+    # dataAfterCross10 = mutation(dataAfterCross10)
+    afterCross2 = {
+        1: dataAfterCross,
+        2: dataAfterCross2,
+        3: dataAfterCross3,
+        4: dataAfterCross4,
+        5: dataAfterCross5,
+        6: dataAfterCross6,
+        7: dataAfterCross7,
+        8: dataAfterCross8,
+        9: dataAfterCross9,
+        10: dataAfterCross10
+    }
+
+    fit = fitness(dataAfterCross)
+    fit2 = fitness(dataAfterCross2)
+    fit3 = fitness(dataAfterCross3)
+    fit4 = fitness(dataAfterCross4)
+    fit5 = fitness(dataAfterCross5)
+    fit6 = fitness(dataAfterCross6)
+    fit7 = fitness(dataAfterCross7)
+    fit8 = fitness(dataAfterCross8)
+    fit9 = fitness(dataAfterCross9)
+    fit10 = fitness(dataAfterCross10)
+    bestFit2 = getBestFit(fit, fit2, fit3, fit4, fit5,
+                          fit6, fit7, fit8, fit9, fit10)
+    checked = checkAnswer(bestFit)
+    # print("bestFit2", bestFit2)
+    afterCross2 = {
+        1: afterCross2[bestFit2[0][0]],
+        2: afterCross2[bestFit2[1][0]],
+        3: afterCross2[bestFit2[2][0]],
+        4: afterCross2[bestFit2[3][0]],
+        5: afterCross2[bestFit2[4][0]]
+    }
+    # print(bestFit)
+    if (checked == False):
+        dataAfterCross, dataAfterCross2 = crossover(
+            afterCross[1], afterCross2[1])
+        dataAfterCross3, dataAfterCross4 = crossover(
+            afterCross[2], afterCross2[2])
+        dataAfterCross5, dataAfterCross6 = crossover(
+            afterCross[3], afterCross2[3])
+        dataAfterCross7, dataAfterCross8 = crossover(
+            afterCross[4], afterCross2[4])
+        dataAfterCross9, dataAfterCross10 = crossover(
+            afterCross[5], afterCross2[5])
+        afterCross = {
             1: dataAfterCross,
             2: dataAfterCross2,
             3: dataAfterCross3,
@@ -231,7 +275,6 @@ if (checked == False):
             9: dataAfterCross9,
             10: dataAfterCross10
         }
-
         fit = fitness(dataAfterCross)
         fit2 = fitness(dataAfterCross2)
         fit3 = fitness(dataAfterCross3)
@@ -242,81 +285,37 @@ if (checked == False):
         fit8 = fitness(dataAfterCross8)
         fit9 = fitness(dataAfterCross9)
         fit10 = fitness(dataAfterCross10)
-        bestFit2 = getBestFit(fit, fit2, fit3, fit4, fit5,
-                              fit6, fit7, fit8, fit9, fit10)
-        checked = checkAnswer(bestFit)
-        afterCross2 = {
-            1: afterCross2[bestFit2[0][0]],
-            2: afterCross2[bestFit2[1][0]],
-            3: afterCross2[bestFit2[2][0]],
-            4: afterCross2[bestFit2[3][0]],
-            5: afterCross2[bestFit2[4][0]]
+        bestFit = getBestFit(fit, fit2, fit3, fit4, fit5,
+                             fit6, fit7, fit8, fit9, fit10)
+        # print("bestFit", bestFit)
+        afterCross = {
+            1: afterCross[bestFit[0][0]],
+            2: afterCross[bestFit[1][0]],
+            3: afterCross[bestFit[2][0]],
+            4: afterCross[bestFit[3][0]],
+            5: afterCross[bestFit[4][0]]
         }
         if (bestFit[4][1] > bestofbest):
             bestofbest = bestFit[4][1]
             bestInEachGen.append(bestofbest)
-            bestofbestBoard = afterCross[5]
-        print(bestFit)
-        if (checked == False):
-            print("not close to answer")
-            dataAfterCross, dataAfterCross2 = crossover(
-                afterCross[1], afterCross2[1])
-            dataAfterCross3, dataAfterCross4 = crossover(
-                afterCross[2], afterCross2[2])
-            dataAfterCross5, dataAfterCross6 = crossover(
-                afterCross[3], afterCross2[3])
-            dataAfterCross7, dataAfterCross8 = crossover(
-                afterCross[4], afterCross2[4])
-            dataAfterCross9, dataAfterCross10 = crossover(
-                afterCross[5], afterCross2[5])
-            afterCross = {
-                1: dataAfterCross,
-                2: dataAfterCross2,
-                3: dataAfterCross3,
-                4: dataAfterCross4,
-                5: dataAfterCross5,
-                6: dataAfterCross6,
-                7: dataAfterCross7,
-                8: dataAfterCross8,
-                9: dataAfterCross9,
-                10: dataAfterCross10
-            }
-            fit = fitness(dataAfterCross)
-            fit2 = fitness(dataAfterCross2)
-            fit3 = fitness(dataAfterCross3)
-            fit4 = fitness(dataAfterCross4)
-            fit5 = fitness(dataAfterCross5)
-            fit6 = fitness(dataAfterCross6)
-            fit7 = fitness(dataAfterCross7)
-            fit8 = fitness(dataAfterCross8)
-            fit9 = fitness(dataAfterCross9)
-            fit10 = fitness(dataAfterCross10)
-            bestFit = getBestFit(fit, fit2, fit3, fit4, fit5,
-                                 fit6, fit7, fit8, fit9, fit10)
-            print("bestFit", bestFit)
-            afterCross = {
-                1: afterCross[bestFit[0][0]],
-                2: afterCross[bestFit[1][0]],
-                3: afterCross[bestFit[2][0]],
-                4: afterCross[bestFit[3][0]],
-                5: afterCross[bestFit[4][0]]
-            }
-            if (bestFit[4][1] > bestofbest):
-                bestofbest = bestFit[4][1]
-                bestInEachGen.append(bestofbest)
-                bestofbestBoard = afterCross[5]
-            loopcount += 1
-            if (loopcount == 10):
-                loopthrough = True
-            if (bestFit[4][1] == 250):
-                print("found answer")
-                print(afterCross[bestFit[4][0]])
-                print(bestFit[4][1])
-                break
-        else:
+            bestofbestBoard = afterCross[5].copy()
+            print("bestfit", bestFit)
+            print("bestFit[4][0]", bestFit[4][0])
+            print("bestofbest", bestofbest)
+            print("bestofbestBoard", bestofbestBoard)
+            print("loop", loopcount)
+        if (bestFit[4][1] == 256):
+            print("found answer")
+            print(afterCross[bestFit[4][0]])
+            print(bestFit[4][1])
+            break
+        loopcount += 1
+        if (loopcount == 1000):
             loopthrough = True
-            print("close to answer")
-            print(checked)
+    else:
+        loopthrough = True
+        print("close to answer")
+        print(checked)
 print("best of best", bestofbest)
 print("best of best board", bestofbestBoard)
 showboard = np.zeros((8, 8))
@@ -334,7 +333,7 @@ for i in range(8):
 col = colors.ListedColormap(colorz)
 fig, ax = plt.subplots()
 im = ax.imshow(showboard, cmap=col)
-print(bestInEachGen)
-# plt.hist(bestInEachGen)
+# print(bestInEachGen)
+# # plt.hist(bestInEachGen)
 
 plt.show()
