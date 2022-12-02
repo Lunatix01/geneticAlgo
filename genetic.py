@@ -7,7 +7,7 @@ colorz = ['red', 'green', 'purple', 'orange']
 colorBits = ['00', '01', '10', '11']
 colorRep = ['0.1', '0.2', '0.3', '0.4']
 
-# create generation 1 of random population
+# create initial population
 
 
 def checkboard(n):
@@ -29,6 +29,8 @@ def checkboard(n):
                 datas[i, j] = 0.4
                 dataInBits[i, j] = '11'
     return dataInBits
+
+# fitness function
 
 
 def fitness(data):
@@ -57,6 +59,7 @@ def fitness(data):
     return fit
 
 
+# generate initial population
 sample1 = checkboard(8)
 sample2 = checkboard(8)
 sample3 = checkboard(8)
@@ -68,16 +71,19 @@ sample8 = checkboard(8)
 sample9 = checkboard(8)
 sample10 = checkboard(8)
 
+# selecting samples accoring to their fitness so every sample has a chance that depends on its fitness weight
 listOfFirstGen = [sample1, sample2, sample3, sample4,
                   sample5, sample6, sample7, sample8, sample9, sample10]
 
+
 fitnesses = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sample4),
              fitness(sample5), fitness(sample6), fitness(sample7), fitness(sample8), fitness(sample9), fitness(sample10)]
+
 listOfFirstGenFit = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sample4), fitness(sample5),
                      fitness(sample6), fitness(sample7), fitness(sample8), fitness(sample9), fitness(sample10)]
 
-
 sorttedFitness = sorted((e, i) for i, e in enumerate(fitnesses))
+
 # multiply by 1 to start of list for second multiply by 10, for third multiply by 100 so on
 count = 5
 sorttedFitnessOfWithMargin = sorttedFitness.copy()
@@ -85,7 +91,6 @@ for i in range(10):
     sorttedFitnessOfWithMargin[i] = (
         sorttedFitness[i][0]*count, sorttedFitness[i][1])
     count += 5
-
 listOfUpdatedFitness = []
 labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 for i in range(10):
@@ -94,6 +99,8 @@ for i in range(10):
 listOfRandomChoices = random.choices(
     labels, weights=listOfUpdatedFitness, k=10)
 first = np.random.choice(listOfRandomChoices, size=10, replace=False)
+
+# split the list each 2 elements
 
 
 def split(arr, size):
@@ -118,6 +125,8 @@ for i in range(5):
     else:
         pass
 
+# crossover function
+
 
 def crossover(data, data2):
     leng = len(data)
@@ -133,7 +142,34 @@ def crossover(data, data2):
 
     return temp, temp2
 
+# convert bits to numbers to show the board
 
+
+def convert(boardInBits):
+    showboard = np.zeros((8, 8))
+    for i in range(8):
+        for j in range(8):
+            if boardInBits[i, j] == '00':
+                showboard[i, j] = 0.1
+            elif boardInBits[i, j] == '01':
+                showboard[i, j] = 0.2
+            elif boardInBits[i, j] == '10':
+                showboard[i, j] = 0.3
+            elif boardInBits[i, j] == '11':
+                showboard[i, j] = 0.4
+    return showboard
+
+# show the board
+
+
+def show(board, title):
+    col = colors.ListedColormap(colorz)
+    fig, ax = plt.subplots()
+    im = ax.imshow(board, cmap=col)
+    plt.title("fitness: "+str(title))
+
+
+# generate new sample for generation 2
 sample1, sample2 = crossover(
     listOfFirstGen[first[0][0]], listOfFirstGen[first[0][1]])
 sample3, sample4 = crossover(
@@ -150,10 +186,8 @@ fitnesses = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sampl
 
 #  mutation function
 
-
 def mutation(data, fitnesss):
     leng = len(data)
-
     bitsArray = ['00', '01', '10', '11']
     for i in range(leng):
         randomList = np.arange(i, leng).tolist()
@@ -166,6 +200,8 @@ def mutation(data, fitnesss):
         mutation(data, fitnessOfNewData)
     return data
 
+# function to check if we got the best solution or not
+
 
 def checkAnswer(listOfFitness):
     # iterate through bestFit and check if close to answer %90 of 256
@@ -175,15 +211,19 @@ def checkAnswer(listOfFitness):
     return False, -1
 
 
+# variables to store the best fitness and the best board, and some local vars
 checked, i = checkAnswer(fitnesses)
 loopthrough = False
 loopcount = 0
 bestofbest = 0
 bestofbestBoard = np.zeros((8, 8))
 lastBest = 0
+
 # get 5 old best generation
 while (loopthrough == False):
+    # randomize the seed
     np.random.seed(loopcount)
+    # selecting samples accoring to their fitness so every sample has a chance that depends on its fitness weight
     listOfFirstGen = [sample1, sample2, sample3, sample4,
                       sample5, sample6, sample7, sample8, sample9, sample10]
     fitnesses = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sample4),
@@ -204,6 +244,7 @@ while (loopthrough == False):
         labels, weights=listOfUpdatedFitness, k=10)
     first = np.random.choice(listOfRandomChoices, size=10, replace=False)
     first = split(first, 2)
+
     # loop to check if each array inside first array are the same if yes then regenerate
     for i in range(5):
         if first[i][0] == first[i][1]:
@@ -213,6 +254,7 @@ while (loopthrough == False):
             break
         else:
             pass
+    # crossover samples
     sample1, sample2 = crossover(
         listOfFirstGen[first[0][0]], listOfFirstGen[first[0][1]])
     sample3, sample4 = crossover(
@@ -229,23 +271,29 @@ while (loopthrough == False):
                  fitness(sample5), fitness(sample6), fitness(sample7), fitness(sample8), fitness(sample9), fitness(sample10)]
     checked, i = checkAnswer(fitnesses)
 
+    # if we got the best solution then break the loop
     if (checked == True):
         print("found answer in generation", fitnesses)
         bestofbest = fitnesses[i]
         bestofbestBoard = listOfFirstGen[i]
         loopthrough = True
         break
+    # show the best board of this generation
+    localBest = max(fitnesses)
+    max_index = fitnesses.index(max(fitnesses))
+    showLocalBest = listOfFirstGen[max_index]
+    localBoard = convert(showLocalBest)
+    show(localBoard, localBest)
+    # if we got better solution then save it
     if (max(fitnesses) > bestofbest):
         bestofbest = max(fitnesses)
         max_index = fitnesses.index(max(fitnesses))
         bestofbestBoard = listOfFirstGen[max_index]
         lastBest = loopcount
+    # if we didnt get the best solution in every 20 generation then mutate
     if (loopcount == lastBest+20):
         print('mutate', loopcount)
         lastBest = loopcount
-        # minIndex = fitnesses.index(min(fitnesses))
-        # listOfFirstGen[minIndex] = mutation(listOfFirstGen[minIndex])
-        # if()
         sample1 = mutation(sample1, fitnesses[0])
         sample2 = mutation(sample2, fitnesses[1])
         sample3 = mutation(sample3, fitnesses[2])
@@ -264,22 +312,11 @@ while (loopthrough == False):
 print("best of best", bestofbest)
 print("best of best board", bestofbestBoard)
 print("loop count", loopcount)
-showboard = np.zeros((8, 8))
-for i in range(8):
-    for j in range(8):
-        if bestofbestBoard[i, j] == '00':
-            showboard[i, j] = 0.1
-        elif bestofbestBoard[i, j] == '01':
-            showboard[i, j] = 0.2
-        elif bestofbestBoard[i, j] == '10':
-            showboard[i, j] = 0.3
-        elif bestofbestBoard[i, j] == '11':
-            showboard[i, j] = 0.4
-
-col = colors.ListedColormap(colorz)
-fig, ax = plt.subplots()
-im = ax.imshow(showboard, cmap=col)
 
 
-plt.title("fitness: "+str(bestofbest))
+showboard = convert(bestofbestBoard)
+
+show(showboard, str(bestofbest))
+
+
 plt.show()
