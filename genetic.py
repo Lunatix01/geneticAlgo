@@ -76,13 +76,8 @@ fitnesses = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sampl
 listOfFirstGenFit = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sample4), fitness(sample5),
                      fitness(sample6), fitness(sample7), fitness(sample8), fitness(sample9), fitness(sample10)]
 
-# listOfRandomChoices.sort()
-# print(listOfRandomChoices)
-print(fitnesses)
-# print(sorted(fitnesses)[9])
 
 sorttedFitness = sorted((e, i) for i, e in enumerate(fitnesses))
-print(sorttedFitness, 'sorted fitness')
 # multiply by 1 to start of list for second multiply by 10, for third multiply by 100 so on
 count = 5
 sorttedFitnessOfWithMargin = sorttedFitness.copy()
@@ -90,18 +85,14 @@ for i in range(10):
     sorttedFitnessOfWithMargin[i] = (
         sorttedFitness[i][0]*count, sorttedFitness[i][1])
     count += 5
-print(sorttedFitnessOfWithMargin, 'sorttedFitnessOfWithMargin')
 
 listOfUpdatedFitness = []
 labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 for i in range(10):
     listOfUpdatedFitness.append(sorttedFitnessOfWithMargin[i][0])
     labels[i] = sorttedFitnessOfWithMargin[i][1]
-print(listOfUpdatedFitness, 'updated fitness')
-print(labels, 'labels')
 listOfRandomChoices = random.choices(
     labels, weights=listOfUpdatedFitness, k=10)
-print(listOfRandomChoices, 'random choices')
 first = np.random.choice(listOfRandomChoices, size=10, replace=False)
 
 
@@ -132,10 +123,8 @@ def crossover(data, data2):
     leng = len(data)
     temp = np.copy(data)
     temp2 = np.copy(data2)
-
     for i in range(leng):
         randomList = np.arange(i, leng).tolist()
-
         indexes = np.random.choice(
             randomList, size=int(np.fix((leng-i)/2)), replace=False)
         for j in indexes:
@@ -145,7 +134,6 @@ def crossover(data, data2):
     return temp, temp2
 
 
-print("indexes of first", first[0][0], first[0][1])
 sample1, sample2 = crossover(
     listOfFirstGen[first[0][0]], listOfFirstGen[first[0][1]])
 sample3, sample4 = crossover(
@@ -159,100 +147,23 @@ sample9, sample10 = crossover(
 fitnesses = [fitness(sample1), fitness(sample2), fitness(sample3), fitness(sample4),
              fitness(sample5), fitness(sample6), fitness(sample7), fitness(sample8), fitness(sample9), fitness(sample10)]
 
-print('------------------------1')
-print(listOfFirstGen[first[0][0]], 'sample1')
-print('------------------------')
-print(sample1, 'afterCrossover1')
-print('------------------------1')
-print(listOfFirstGen[first[0][1]], 'sample2')
-print('------------------------1')
-print(sample2, 'afterCrossover2')
-print('------------------------')
-
-
-# def checkDuplicates(listOfRandomChoices, first, second, third, fourth, fifth):
-#     isThereDuplicates = True
-#     while isThereDuplicates:
-#         if first[0] == first[1]:
-#             first = np.random.choice(
-#                 listOfRandomChoices, size=2, replace=False)
-#         elif second[0] == second[1]:
-#             second = np.random.choice(
-#                 listOfRandomChoices, size=2, replace=False)
-#         elif third[0] == third[1]:
-#             third = np.random.choice(
-#                 listOfRandomChoices, size=2, replace=False)
-#         elif fourth[0] == fourth[1]:
-#             fourth = np.random.choice(
-#                 listOfRandomChoices, size=2, replace=False)
-#         elif fifth[0] == fifth[1]:
-#             fifth = np.random.choice(
-#                 listOfRandomChoices, size=2, replace=False)
-#         else:
-#             isThereDuplicates = False
-#     return first, second, third, fourth, fifth
-
-
-# first, second, third, fourth, fifth = checkDuplicates(
-#     listOfRandomChoices, first, second, third, fourth, fifth)
-
-
-# isThereSimilar = True
-# arrayOfPairs = [first, second, third, fourth, fifth]
-# print(arrayOfPairs, 'array of pairs')
-# setOfChoices = set(set(tuple(i) for i in arrayOfPairs))
-# print(len(setOfChoices), 'length of set')
-
-# print(setOfChoices, 'set of choices')
-
-
-# fitness function
-
-
-# def crossover(data, data2):
-#     leng = len(data)
-#     temp = data.copy()
-#     temp2 = data2.copy()
-#     for i in range(leng):
-#         for j in range(leng):
-#             if j >= 4:
-#                 data[i, j] = temp2[i, j]
-#                 data2[i, j] = temp[i, j]
-#     return data, data2
-
-
-# afterCross = {
-#     1: dataAfterCross,
-#     2: dataAfterCross2,
-#     3: dataAfterCross3,
-#     4: dataAfterCross4,
-#     5: dataAfterCross5,
-#     6: dataAfterCross6,
-#     7: dataAfterCross7,
-#     8: dataAfterCross8,
-#     9: dataAfterCross9,
-#     10: dataAfterCross10
-# }
 
 #  mutation function
 
 
-def mutation(data):
-    for i in range(len(data)):
-        # indexes = np.random.choice(len(data), size=4, replace=False)
-        bits = np.random.choice(
-            ['00', '01', '10', '11'], size=4, replace=False)
-        oddOrEven = np.random.choice([0, 1], size=1, replace=False)
-        if (oddOrEven == 0 and i % 2 == 0):
-            data[i, 0] = bits[0]
-            data[i, 2] = bits[1]
-            data[i, 4] = bits[2]
-            data[i, 6] = bits[3]
-        else:
-            data[i, 1] = bits[0]
-            data[i, 3] = bits[1]
-            data[i, 5] = bits[2]
-            data[i, 7] = bits[3]
+def mutation(data, fitnesss):
+    leng = len(data)
+
+    bitsArray = ['00', '01', '10', '11']
+    for i in range(leng):
+        randomList = np.arange(i, leng).tolist()
+        indexes = np.random.choice(
+            randomList, size=int(np.fix((leng-i)/2)), replace=False)
+        for j in indexes:
+            data[i, j] = np.random.choice(bitsArray)
+    fitnessOfNewData = fitness(data)
+    if (fitnessOfNewData <= fitnesss):
+        mutation(data, fitnessOfNewData)
     return data
 
 
@@ -329,28 +240,30 @@ while (loopthrough == False):
         max_index = fitnesses.index(max(fitnesses))
         bestofbestBoard = listOfFirstGen[max_index]
         lastBest = loopcount
-    if (loopcount == lastBest+25):
-        print('mutate', lastBest)
-        sample1 = mutation(sample1)
-        sample2 = mutation(sample2)
-        sample3 = mutation(sample3)
-        sample4 = mutation(sample4)
-        sample5 = mutation(sample5)
-        sample6 = mutation(sample6)
-        sample7 = mutation(sample7)
-        sample8 = mutation(sample8)
-        sample9 = mutation(sample9)
-        sample10 = mutation(sample10)
+    if (loopcount == lastBest+20):
+        print('mutate', loopcount)
+        lastBest = loopcount
+        # minIndex = fitnesses.index(min(fitnesses))
+        # listOfFirstGen[minIndex] = mutation(listOfFirstGen[minIndex])
+        # if()
+        sample1 = mutation(sample1, fitnesses[0])
+        sample2 = mutation(sample2, fitnesses[1])
+        sample3 = mutation(sample3, fitnesses[2])
+        sample4 = mutation(sample4, fitnesses[3])
+        sample5 = mutation(sample5, fitnesses[4])
+        sample6 = mutation(sample6, fitnesses[5])
+        sample7 = mutation(sample7, fitnesses[6])
+        sample8 = mutation(sample8, fitnesses[7])
+        sample9 = mutation(sample9, fitnesses[8])
+        sample10 = mutation(sample10, fitnesses[9])
 
     loopcount += 1
-    if (loopcount == 100):
+    if (loopcount == 1000):
         loopthrough = True
-    # else:
-    #     loopthrough = True
-    #     print("close to answer")
-    #     print(checked)
+
 print("best of best", bestofbest)
 print("best of best board", bestofbestBoard)
+print("loop count", loopcount)
 showboard = np.zeros((8, 8))
 for i in range(8):
     for j in range(8):
@@ -366,8 +279,7 @@ for i in range(8):
 col = colors.ListedColormap(colorz)
 fig, ax = plt.subplots()
 im = ax.imshow(showboard, cmap=col)
-# print(bestInEachGen)
-# plt.hist(bestInEachGen)
+
 
 plt.title("fitness: "+str(bestofbest))
 plt.show()
